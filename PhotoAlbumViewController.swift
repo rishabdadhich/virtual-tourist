@@ -21,7 +21,7 @@ class PhotoAlbumViewController: UIViewController {
     
     //MARK:- Variable declaration Intilaization
     let FlickerClient = FlickrClient.sharedInstance()
-    let stack = coreDataStack.sharedInstance()
+    let stack = CoreDataStack.sharedInstance()
     
     // this will keep track of the current location
     var pin: Pin!

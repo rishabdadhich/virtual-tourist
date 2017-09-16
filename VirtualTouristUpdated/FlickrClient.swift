@@ -22,7 +22,7 @@ class FlickrClient{
             FlickrConstants.ParameterKeys.SearchType : FlickrConstants.ParameterValues.SafeSearch,
             FlickrConstants.ParameterKeys.Extras : FlickrConstants.ParameterValues.MediumURL,
             FlickrConstants.ParameterKeys.Format : FlickrConstants.ParameterValues.JSONFormat,
-            FlickrConstants.ParameterKeys.JSONCallback : FlickrConstants.ParameterValues.NoJSONCallback,FlickrConstants.ParameterKeys.Page : FlickrConstants.ResponseKeys.Pages
+            FlickrConstants.ParameterKeys.JSONCallback : FlickrConstants.ParameterValues.NoJSONCallback,FlickrConstants.ParameterKeys.Page : ("\(arc4random_uniform(15))" as AnyObject) as? String
         ]
         
         // Request Setup
@@ -95,7 +95,7 @@ class FlickrClient{
         }
 
         
-        
+        task.resume()
 
     }
     
@@ -185,23 +185,6 @@ class FlickrClient{
     
     
     
-//    func downloadImage( imagePath:String, completionHandler: @escaping (_ imageData: NSData?, _ errorString: String?) -> Void){
-//        let session = URLSession.shared
-//        let imgURL = NSURL(string: imagePath)
-//        let request: NSURLRequest = NSURLRequest(url: imgURL! as URL)
-//        
-//        let task = session.dataTask(with: request as URLRequest) {data, response, downloadError in
-//            
-//            if let _ = downloadError {
-//                completionHandler(nil, "Could not download image \(imagePath)")
-//            } else {
-//                
-//                completionHandler(data as NSData?, nil)
-//            }
-//        }
-//        
-//        task.resume()
-//    }
     
     //MARK:- Download photos based on the provided photo URL.
     func downloadPhotos(photoURL:String, completionHandlerForDownloadPhotos: @escaping (_ image: NSData?, _ error: NSError?) -> Void)

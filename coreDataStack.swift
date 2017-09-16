@@ -8,12 +8,12 @@
 
 import Foundation
 import CoreData
-class coreDataStack{
+class CoreDataStack{
     // MARK: Shared Instance
     
-    class func sharedInstance() -> coreDataStack {
+    class func sharedInstance() -> CoreDataStack {
         struct Singleton {
-            static var sharedInstance = coreDataStack()
+            static var sharedInstance = CoreDataStack()
         }
         return Singleton.sharedInstance
     }

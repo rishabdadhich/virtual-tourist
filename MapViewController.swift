@@ -20,7 +20,7 @@ class MapViewController: UIViewController,MKMapViewDelegate,UIGestureRecognizerD
     var pins = [Pin]()
     var selectedPin: Pin? = nil
     //MARK:- Variables
-    let stack = coreDataStack.sharedInstance()
+    let stack = CoreDataStack.sharedInstance()
     var centerCoordinate: CLLocationCoordinate2D?
     var centerCoordinateLongitude: CLLocationDegrees?
     var centerCoordinateLatitude: CLLocationDegrees?
