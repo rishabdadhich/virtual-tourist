@@ -12,7 +12,7 @@ class FlickrClient{
     
     func searchPhotosFromFlickr(latitude: Double, longitude: Double, completionHandlerForSearchPhotos: @escaping (_ photoURLS: [String]?, _ error: NSError?) -> Void)
     {
-    
+        
         // Parameters adding
         
         let flickrParameters : [String : String?] = [
@@ -40,12 +40,12 @@ class FlickrClient{
                 let userInfo = [NSLocalizedDescriptionKey : error]
                 completionHandlerForSearchPhotos(nil, NSError(domain: "searchPhotosFromFlickr", code: 1, userInfo: userInfo))
             }
-
+            
             
             // guard statements incoming
             
             guard let data = data else {
-               sendError("no data was returned with request!")
+                sendError("no data was returned with request!")
                 
                 return
             }
@@ -68,82 +68,10 @@ class FlickrClient{
                 
                 
             } catch {
-               sendError(" Catched Error in JSON serialization Json Object creation")
+                sendError(" Catched Error in JSON serialization Json Object creation")
                 
             }
             
-            
-            
-            /* GUARD: Is "photos" key in our result? */
-            guard let photosDictionary = parsedResult?[FlickrConstants.ResponseKeys.Photos] as? [String:AnyObject] else {
-                sendError("Cannot find keys '\(FlickrConstants.ResponseKeys.Photos)' in \(parsedResult)")
-                return
-            }
-            
-            /* GUARD: Is "pages" key in the photosDictionary? */
-            guard let totalPages = photosDictionary[FlickrConstants.ResponseKeys.Pages] as? Int else {
-                sendError("Cannot find key '\(FlickrConstants.ResponseKeys.Pages)' in \(photosDictionary)")
-                return
-            }
-            
-            // pick a random page!
-            let pageLimit = min(totalPages, 40)
-            let randomPage = Int(arc4random_uniform(UInt32(pageLimit))) + 1
-            
-            let photoArrayString : [String] = self.displayImageFromFlickrBySearch(methodParameters: flickrParameters as [String : AnyObject], withPageNumber: randomPage)
-          completionHandlerForSearchPhotos(photoArrayString, nil)
-        }
-
-        
-        task.resume()
-
-    }
-    
-    // FIX: For Swift 3, variable parameters are being depreciated. Instead, create a copy of the parameter inside the function.
-    
-    private func displayImageFromFlickrBySearch(methodParameters: [String: AnyObject], withPageNumber: Int) -> [String] {
-        
-        var photoUrl : [String] = []
-    
-        // add the page to the method's parameters
-        var methodParametersWithPageNumber = methodParameters
-        methodParametersWithPageNumber[FlickrConstants.ParameterKeys.Page] = withPageNumber as AnyObject?
-        
-        // Request Setup
-        
-        
-        let getRequestSetup = FlickrHelper.sharedInstance().getBuildURL(parameters: methodParameters as [String : AnyObject])
-        
-        // create network request
-        let task = URLSession.shared.dataTask(with: getRequestSetup) { (data, response, error) in
-            
-            
-            /* GUARD: Was there an error? */
-            guard (error == nil) else {
-                print("There was an error with your request: \(error)")
-                return
-            }
-            
-            /* GUARD: Did we get a successful 2XX response? */
-            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
-                print("Your request returned a status code other than 2xx!")
-                return
-            }
-            
-            /* GUARD: Was there any data returned? */
-            guard let data = data else {
-                print("No data was returned by the request!")
-                return
-            }
-            
-            // parse the data
-            let parsedResult: [String:AnyObject]!
-            do {
-                parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String:AnyObject]
-            } catch {
-                print("Could not parse the data as JSON: '\(data)'")
-                return
-            }
             
             guard let photosDictionary = parsedResult?[FlickrConstants.ResponseKeys.Photos] as? [String:AnyObject],
                 let photosArray = photosDictionary[FlickrConstants.ResponseKeys.Photo] as? [[String:AnyObject]]
@@ -161,7 +89,7 @@ class FlickrClient{
             let photosArrayCount = photosArray.count-1
             print(photosArrayCount)
             
-//            var photoUrl : [String] = []
+            var photoUrl : [String] = []
             
             for photoindex in 0...photosArrayCount {
                 
@@ -171,18 +99,18 @@ class FlickrClient{
                     print("Unable to locate image URL in photo dictionary")
                     return
                 }
-                print(imageURLString)
+                //                print(imageURLString)
                 photoUrl.append(imageURLString)
-            
+                
+                
             }
-       
+            completionHandlerForSearchPhotos(photoUrl, nil)
         }
         
+        
         task.resume()
-        return photoUrl
+        
     }
-    ////
-    
     
     
     
@@ -204,7 +132,7 @@ class FlickrClient{
         }
         task.resume()
     }
-
+    
     
     //Convert Flickr URLs to  Image Data.
     func getImageDataFlickrURL (urlString : String) -> Data? {
@@ -225,7 +153,7 @@ class FlickrClient{
         }
         return Singleton.sharedInstance
     }
-
+    
     
     
 }

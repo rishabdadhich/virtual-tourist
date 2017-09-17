@@ -14,7 +14,7 @@ class PhotoAlbumViewController: UIViewController {
     @IBOutlet weak var mapView: MKMapView!
     
     @IBOutlet weak var collectionView: UICollectionView!
- 
+    
     @IBOutlet weak var newCollectionButton: UIButton!
     
     @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
@@ -29,7 +29,7 @@ class PhotoAlbumViewController: UIViewController {
     
     var insertIndexCache: [NSIndexPath]!
     var deleteIndexCache: [NSIndexPath]!
-
+    
     //Set the title of the Tool Button accordingly.
     var selectedPhotos = [NSIndexPath]()
         {
@@ -39,11 +39,11 @@ class PhotoAlbumViewController: UIViewController {
             newCollectionButton.setTitle(name, for: .normal)
         }
     }
-
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         self.navigationController!.navigationBar.topItem!.backBarButtonItem = UIBarButtonItem(title: "OK",style:.plain,target: nil,action: nil)
         
@@ -60,7 +60,7 @@ class PhotoAlbumViewController: UIViewController {
         {
             searchAndSaveFlickrPhotos()
         }
-
+        
     }///
     
     // Initialize the CollectionView and FlowLayout
@@ -78,23 +78,19 @@ class PhotoAlbumViewController: UIViewController {
         collectionViewFlowLayout.minimumLineSpacing = space
         collectionViewFlowLayout.itemSize = CGSize(width: dimension, height: dimension)
     }
-
+    
     @IBAction func newCollectionAction(_ sender: Any) {
         
-            if selectedPhotos.isEmpty
-            {
-                deleteAllPhotos()
-                searchAndSaveFlickrPhotos()
-            }
-            else
-            {
-                deleteSelectedPhotos()
-            }
+        if selectedPhotos.isEmpty
+        {
+            deleteAllPhotos()
+            searchAndSaveFlickrPhotos()
         }
-
-    
-
-   
+        else
+        {
+            deleteSelectedPhotos()
+        }
+    }
 }///
 //MARK:- Handle core data operations
 extension PhotoAlbumViewController{
@@ -115,7 +111,7 @@ extension PhotoAlbumViewController{
                     for url in photoURLs!
                     {
                         ///
-                        print(url)
+                        print("my\(url)")
                         let photo = Photos(context: self.stack.persistentContainer.viewContext)
                         photo.pin = self.pin
                         photo.url = url

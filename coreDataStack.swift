@@ -63,4 +63,17 @@ class CoreDataStack{
             }
         }
     }
+    func autoSave(delayInSeconds : Int)
+    {
+        if delayInSeconds > 0
+        {
+            saveContext()
+            let when = DispatchTime.now() + .seconds(delayInSeconds)
+            DispatchQueue.main.asyncAfter(deadline: when)
+            {
+                self.autoSave(delayInSeconds: delayInSeconds)
+            }
+        }
+    }
+
 }
